@@ -8,53 +8,57 @@
 
 nav ul a,
 nav .brand-logo {
-  color: #444;
+    color: #444;
 }
 
 p {
-  line-height: 2rem;
+    line-height: 2rem;
 }
 
 .sidenav-trigger {
-  color: #26a69a;
+    color: #26a69a;
 }
 
 .parallax-container {
-  min-height: 380px;
-  line-height: 0;
-  height: auto;
-  color: rgba(255,255,255,.9);
+    min-height: 380px;
+    line-height: 0;
+    height: auto;
+    color: rgba(255,255,255,.9);
 }
-  .parallax-container .section {
-    width: 100%;
-  }
+
+    .parallax-container .section {
+        width: 100%;
+    }
 
 @media only screen and (max-width : 992px) {
-  .parallax-container .section {
-    position: absolute;
-    top: 40%;
-  }
-  #index-banner .section {
-    top: 10%;
-  }
+    .parallax-container .section {
+        position: absolute;
+        top: 40%;
+    }
+
+    #index-banner .section {
+        top: 10%;
+    }
 }
 
 @media only screen and (max-width : 600px) {
-  #index-banner .section {
-    top: 0;
-  }
+    #index-banner .section {
+        top: 0;
+    }
 }
 
 .icon-block {
-  padding: 0 15px;
-}
-.icon-block .material-icons {
-  font-size: inherit;
+    padding: 0 15px;
 }
 
+    .icon-block .material-icons {
+        font-size: inherit;
+    }
+
 footer.page-footer {
-  margin: 0;
+    margin: 0;
 }
+
 /* Removes padding */
 .padding-0px {
     padding: 0px !important;
@@ -70,6 +74,7 @@ footer.page-footer {
         height: 56px;
     }
 }
+
 /* Adjusting padding to display Side Nav */
 header.secureLayout, main.secureLayout, footer.secureLayout {
     padding-left: 300px;
@@ -88,4 +93,37 @@ header.secureLayout, main.secureLayout, footer.secureLayout {
 
 .margin-bottom-0px {
     margin-bottom: 0px;
+}
+
+/* ===== Added for Service Engineers / Accounts pages ===== */
+.padding-bottom-15px {
+    padding-bottom: 15px !important;
+}
+
+.padding-left-10px {
+    padding-left: 10px;
+}
+
+.padding-left-20px {
+    padding-left: 20px;
+}
+
+.padding-right-20px {
+    padding-right: 20px;
+}
+
+.margin-top-50px {
+    margin-top: 50px;
+}
+
+.margin-bottom-50px {
+    margin-bottom: 50px;
+}
+
+.cursor-hand {
+    cursor: pointer;
+}
+
+.text-danger {
+    color: red;
 }

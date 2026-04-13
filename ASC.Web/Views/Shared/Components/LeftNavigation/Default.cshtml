@@ -1,0 +1,61 @@
+﻿@using Microsoft.AspNetCore.Http
+@using System.Security.Claims
+@model ASC.Web.Models.NavigationRoot
+@inject IHttpContextAccessor UserHttpContext
+
+@{
+    var currentUserRole = UserHttpContext.HttpContext?.User?.FindFirst(ClaimTypes.Role)?.Value;
+}
+
+@if (!string.IsNullOrEmpty(currentUserRole))
+{
+    @foreach (var menuItem in Model.MenuItems.OrderBy(x => x.Sequence))
+    {
+        if (menuItem.UserRoles != null && menuItem.UserRoles.Contains(currentUserRole))
+        {
+            if (menuItem.IsNested)
+            {
+                <li>
+                    <ul class="collapsible collapsible-accordion">
+                        <li>
+                            <a class="collapsible-header"
+                               id="@string.Format("ancr{0}", menuItem.DisplayName.Replace(" ", ""))">
+                                @menuItem.DisplayName
+                                <i class="material-icons">@menuItem.MaterialIcon</i>
+                            </a>
+
+                            <div class="collapsible-body">
+                                <ul>
+                                    @foreach (var subMenuItem in menuItem.NestedItems.OrderBy(p => p.Sequence))
+                                    {
+                                        if (subMenuItem.UserRoles != null && subMenuItem.UserRoles.Contains(currentUserRole))
+                                        {
+                                            <li>
+                                                <a href="@subMenuItem.Link"
+                                                   id="@string.Format("ancr{0}", subMenuItem.DisplayName.Replace(" ", ""))">
+                                                    @subMenuItem.DisplayName
+                                                    <i class="material-icons">@subMenuItem.MaterialIcon</i>
+                                                </a>
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            }
+            else
+            {
+                <li>
+                    <a href="@menuItem.Link"
+                       id="@string.Format("ancr{0}", menuItem.DisplayName.Replace(" ", ""))"
+                       class="collapsible-header">
+                        <i class="material-icons">@menuItem.MaterialIcon</i>
+                        @menuItem.DisplayName
+                    </a>
+                </li>
+            }
+        }
+    }
+}

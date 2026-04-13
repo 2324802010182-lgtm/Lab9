@@ -1,4 +1,4 @@
-using ASC.Solution.Configuration;
+using ASC.Web.Configuration;
 using ASC.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
