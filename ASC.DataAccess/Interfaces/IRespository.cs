@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ASC.Model.BaseTypes;
 
-namespace ASC.DataAccess
+namespace ASC.DataAccess.Interfaces
 {
     public interface IRepository<T> where T : BaseEntity
     {

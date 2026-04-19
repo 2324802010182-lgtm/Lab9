@@ -1,5 +1,9 @@
-﻿using ASC.DataAccess;
+﻿using ASC.Business;
+using ASC.Business.Interfaces;
+using ASC.DataAccess;
+using ASC.DataAccess.Interfaces;
 using ASC.Solution.Services;
+using ASC.Web.Areas.Configuration.Models;
 using ASC.Web.Configuration;
 using ASC.Web.Data;
 using Microsoft.AspNetCore.Identity;
@@ -60,7 +64,8 @@ namespace ASC.Web.Services
             services.AddRazorPages();
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddControllersWithViews();
-
+            services.AddScoped<IMasterDataOperations, MasterDataOperations>();
+            services.AddAutoMapper(typeof(MappingProfile));
             return services;
         }
     }

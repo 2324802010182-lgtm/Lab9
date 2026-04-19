@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ASC.Model.BaseTypes;
 using Microsoft.EntityFrameworkCore;
-using ASC.DataAccess;
+using ASC.DataAccess.Interfaces;
 namespace ASC.DataAccess
 {
     public class UnitOfWork : IUnitOfWork

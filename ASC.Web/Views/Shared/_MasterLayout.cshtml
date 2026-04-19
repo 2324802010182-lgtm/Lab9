@@ -10,8 +10,8 @@
     <title>@_configurationSettings.Value.ApplicationTitle</title>
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="~/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection" />
-    <link href="~/css/style.css" type="text/css" rel="stylesheet" media="screen,projection" />
+    <link href="@Url.Content("~/css/materialize.css")" type="text/css" rel="stylesheet" media="screen,projection" />
+    <link href="@Url.Content("~/css/style.css")" type="text/css" rel="stylesheet" media="screen,projection" />
 
     <!-- DataTables CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css" />
@@ -19,12 +19,19 @@
 <body>
     @RenderBody()
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/js/materialize.min.js"></script>
-    <script src="~/js/init.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        // Fallback to local jQuery if CDN blocked
+        if (!window.jQuery) {
+            document.write('<script src="@Url.Content("~/lib/jquery/dist/jquery.js")"><\\/script>');
+        }
+    </script>
+    <script src="@Url.Content("~/js/materialize.min.js")"></script>
+    <script src="@Url.Content("~/js/init.js")"></script>
 
     <!-- jQuery Validate -->
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js"></script>
+    <script src="@Url.Content("~/lib/jquery-validation/dist/jquery.validate.js")"></script>
+    <script src="@Url.Content("~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js")"></script>
 
     <!-- DataTables JS -->
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>

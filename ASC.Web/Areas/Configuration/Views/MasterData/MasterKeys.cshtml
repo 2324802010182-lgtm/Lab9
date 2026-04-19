@@ -1,0 +1,185 @@
+﻿@using ASC.Web.Areas.Configuration.Models
+@model MasterKeysViewModel
+@{
+    Layout = "_SecureLayout";
+}
+
+<div class="row padding-top-20px padding-left-20px padding-right-20px">
+    <div class="row z-depth-3">
+        <div class="section white-text padding-left-10px blue-grey lighten-1">
+            <h5>Master Keys</h5>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="col s12 padding-bottom-15px">
+            <table class="highlight centered" id="tblMasterKeys">
+                <thead>
+                    <tr>
+                        <th data-field="RowKey">Row Key</th>
+                        <th data-field="PartitionKey">Partition Key</th>
+                        <th data-field="Name">Name</th>
+                        <th data-field="IsActive">Is Active</th>
+                        <th data-field="IsActiveImg">Is Active</th>
+                        <th data-field="Actions">Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var masterKey in Model.MasterKeys ?? new List<MasterDataKeyViewModel>())
+                    {
+                        <tr>
+                            <td>@masterKey.RowKey</td>
+                            <td>@masterKey.PartitionKey</td>
+                            <td>@masterKey.Name</td>
+                            <td>@masterKey.IsActive</td>
+                            <td>
+                                <img src="@(masterKey.IsActive ? "/images/green_tick.png" : "/images/red_cross.png")" alt="" />
+                            </td>
+                            <td>
+                                <i class="small material-icons edit cursor-hand">mode_edit</i>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row"></div>
+
+    <div class="row z-depth-3">
+        <div class="col s12 padding-0px">
+            <div class="section white-text padding-left-10px blue-grey lighten-1">
+                <h5>Master Key Details</h5>
+            </div>
+
+            <div class="divider"></div>
+
+            <form asp-area="Configuration" asp-controller="MasterData" asp-action="MasterKeys" method="post"
+                  class="col s12" id="formMasterKey">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="IsEdit" />
+
+                <div class="row padding-left-10px padding-right-10px">
+                    <div class="input-field col s12 m4">
+                        <input asp-for="MasterKeyInContext.RowKey" id="Input_MasterKey_RowKey" readonly autocomplete="off" />
+                        <label asp-for="MasterKeyInContext.RowKey" class="active"></label>
+                    </div>
+
+                    <div class="input-field col s12 m4">
+                        <input asp-for="MasterKeyInContext.Name" id="MasterKeyInContext_Name" class="validate" autocomplete="off" />
+                        <label asp-for="MasterKeyInContext.Name"></label>
+                    </div>
+
+                    <div class="input-field col s12 m4">
+                        <input asp-for="MasterKeyInContext.PartitionKey" id="Input_MasterKey_PartitionKey" readonly autocomplete="off" />
+                        <label asp-for="MasterKeyInContext.PartitionKey" class="active"></label>
+                    </div>
+                </div>
+
+                <div class="row padding-left-10px padding-right-10px">
+                    <div class="input-field col s12 m4">
+                        <div class="switch">
+                            <label>
+                                Is Active
+                                <input asp-for="MasterKeyInContext.IsActive" type="checkbox" />
+                                <span class="lever"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row padding-left-10px padding-right-10px">
+                    <div class="input-field col s12 right-align">
+                        <button class="btn waves-effect waves-light btnSubmit" type="submit" name="action">
+                            Create
+                            <i class="material-icons right">send</i>
+                        </button>
+
+                        <button class="btn waves-effect waves-light reset red lighten-1" type="button" name="action">
+                            Reset
+                        </button>
+                    </div>
+
+                    <div class="row col s12 right-align" asp-validation-summary="All"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("~/Views/Shared/_ValidationScriptsPartial.cshtml")
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <script>
+        window.$ = window.$ || window.jQuery;
+    </script>
+    <script>
+        $(document).ready(function () {
+            var table = $('#tblMasterKeys').DataTable({
+                pageLength: 3,
+                lengthMenu: [[3, 5, 10, -1], [3, 5, 10, 'All']]
+            });
+
+            $('#tblMasterKeys').css('width', '100%');
+            $('select[name="tblMasterKeys_length"]').formSelect();
+
+            table.column(1).visible(false);
+            table.column(3).visible(false);
+
+            M.updateTextFields();
+
+            $(document).on('click', '.reset', function () {
+                $('#formMasterKey')[0].reset();
+                $('#IsEdit').val('False');
+                $('.btnSubmit').text('Create');
+                $('#Input_MasterKey_RowKey').val('');
+                $('#Input_MasterKey_PartitionKey').val('');
+                M.updateTextFields();
+            });
+
+            function newGuid() {
+                // RFC4122 v4 style, good enough for UI preview
+                return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                    var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+                    return v.toString(16);
+                });
+            }
+
+            function ensureGeneratedFields() {
+                if ($('#IsEdit').val() === 'True') return;
+                var name = ($('#MasterKeyInContext_Name').val() || '').trim();
+                $('#Input_MasterKey_PartitionKey').val(name);
+                $('#MasterKeyInContext_PartitionKey').val(name);
+                if (!($('#Input_MasterKey_RowKey').val() || '').trim()) {
+                    $('#Input_MasterKey_RowKey').val(newGuid());
+                    $('#MasterKeyInContext_RowKey').val($('#Input_MasterKey_RowKey').val());
+                }
+                M.updateTextFields();
+            }
+
+            $(document).on('input', '#MasterKeyInContext_Name', ensureGeneratedFields);
+
+            $(document).on('click', '.edit', function () {
+                var row = table.row($(this).closest('tr'));
+                var user = row.data();
+                $('#IsEdit').val('True');
+
+                $('#MasterKeyInContext_RowKey').val(user[0]);
+                $('#Input_MasterKey_RowKey').val(user[0]);
+
+                $('#MasterKeyInContext_PartitionKey').val(user[1]);
+                $('#Input_MasterKey_PartitionKey').val(user[1]);
+
+                $('#MasterKeyInContext_Name').val(user[2]);
+                $('#MasterKeyInContext_Name').addClass('valid');
+
+                var active = user[3] === true || user[3] === 'True';
+                $('#MasterKeyInContext_IsActive').prop('checked', active);
+
+                $('.btnSubmit').text('Save');
+                M.updateTextFields();
+            });
+        });
+    </script>
+}

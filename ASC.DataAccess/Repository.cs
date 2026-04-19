@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ASC.DataAccess;
+using ASC.DataAccess.Interfaces;
 using ASC.Model.BaseTypes;
 using Microsoft.EntityFrameworkCore;
 

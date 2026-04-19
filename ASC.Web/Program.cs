@@ -3,6 +3,9 @@ using ASC.Web.Data;
 using ASC.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+using OfficeOpenXml;
+
+ExcelPackage.License.SetNonCommercialOrganization("Automobile Service Center Lab");
 
 var builder = WebApplication.CreateBuilder(args);
 
