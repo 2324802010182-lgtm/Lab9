@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Http
 @using ASC.Utilities
 @using ASC.Web.Data
+@using Microsoft.AspNetCore.Mvc.Rendering
 @* Lay thong tin user dang nhap *@
 @inject IHttpContextAccessor UserHttpContext
 @* Lay menu *@
@@ -108,5 +109,6 @@
             });
         });
     </script>
+
+    @RenderSection("Scripts", required: false)
 }
-@RenderSection("Scripts", required: false)

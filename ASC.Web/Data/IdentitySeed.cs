@@ -103,6 +103,35 @@ namespace ASC.Web.Data
                     }
                 }
             }
+
+            // Create a user if he doesn’t exist
+            var customer = await userManager.FindByEmailAsync(options.Value.UserEmail);
+
+            if (customer == null)
+            {
+                IdentityUser user = new IdentityUser
+                {
+                    UserName = options.Value.UserName,
+                    Email = options.Value.UserEmail,
+                    EmailConfirmed = true,
+                    LockoutEnabled = false
+                };
+
+                IdentityResult result = await userManager.CreateAsync(user, options.Value.UserPassword);
+
+                if (result.Succeeded)
+                {
+                    await userManager.AddClaimAsync(user,
+                        new System.Security.Claims.Claim(
+                            "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
+                            options.Value.UserEmail));
+
+                    await userManager.AddClaimAsync(user,
+                        new System.Security.Claims.Claim("IsActive", "True"));
+
+                    await userManager.AddToRoleAsync(user, Roles.User.ToString());
+                }
+            }
         }
     }
 }

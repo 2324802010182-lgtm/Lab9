@@ -13,7 +13,7 @@ namespace ASC.Model.BaseTypes
 
     public enum Roles
     {
-        Admin, Engineer, User
+        Admin, Engineer, User, 
     }
 
     public enum MasterKeys

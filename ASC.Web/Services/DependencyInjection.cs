@@ -30,7 +30,11 @@ namespace ASC.Web.Services
                     options.ClientId = config["Authentication:Google:ClientId"];
                     options.ClientSecret = config["Authentication:Google:ClientSecret"];
                 });
-
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = config["RedisCacheOptions:Configuration"];
+                options.InstanceName = config["RedisCacheOptions:InstanceName"];
+            });
             return services;
         }
 
@@ -60,12 +64,13 @@ namespace ASC.Web.Services
             services.AddDistributedMemoryCache();
             services.AddSession();
             services.AddHttpContextAccessor();
-
+            services.AddScoped<IServiceRequestOperations, ServiceRequestOperations>();
             services.AddRazorPages();
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddControllersWithViews();
             services.AddScoped<IMasterDataOperations, MasterDataOperations>();
             services.AddAutoMapper(typeof(MappingProfile));
+            services.AddScoped<IMasterDataCacheOperations, MasterDataCacheOperations>();
             return services;
         }
     }

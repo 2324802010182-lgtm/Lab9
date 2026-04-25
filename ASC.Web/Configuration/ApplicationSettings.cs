@@ -15,6 +15,13 @@
         public string EngineerName { get; set; }
         public string EngineerPassword { get; set; }
 
+        // ================== CUSTOMER ==================
+        public string UserEmail { get; set; }
+
+        public string UserName { get; set; }
+
+        public string UserPassword { get; set; }
+
         // ================== ROLES ==================
         // dạng: "Admin,Engineer"
         public string Roles { get; set; }

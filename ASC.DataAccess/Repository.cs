@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using ASC.DataAccess.Interfaces;
@@ -15,7 +16,17 @@ public class Repository<T> : IRepository<T> where T : BaseEntity, new()
     {
         this.dbContext = _dbContext;
     }
+    public async Task<IEnumerable<T>> FindAllByQuery(Expression<Func<T, bool>> filter)
+    {
+        var result = dbContext.Set<T>().Where(filter).ToListAsync().Result;
 
+        return result as IEnumerable<T>;
+    }
+
+    public Task<IEnumerable<T>> FindAllInAuditByQuery(Expression<Func<T, bool>> filter)
+    {
+        throw new NotImplementedException();
+    }
     public async Task<T> AddAsync(T entity)
     {
         var entityToInsert = entity as BaseEntity;
